@@ -10,7 +10,7 @@ public class Polynomial {
 	 * Constructs a Polynomial with no terms yet.
 	 */
 	public Polynomial() {
-		//FIXME
+		this.list = new LinkedList<Double>();
 	}
 
 	
@@ -20,7 +20,7 @@ public class Polynomial {
 	 * @return polynomial with added term
 	 */
 	public void addTerm(double coeff) {
-		//FIXME
+		this.list.add(coeff);
 	}
 	
 	/*
@@ -29,7 +29,56 @@ public class Polynomial {
 	 * Cx^N + Cx^N-1 + ... + Cx + C
 	 */
 	public String toString() {
-		return ""; //FIXME
+		String polynomial = "";
+
+		for (int i = 0; i < this.list.size(); i++) {
+			
+			
+			// if (this.list.get(i) == 0) {
+			// 	polynomial += "";
+
+			
+			if (this.list.get(i) == 0) { // If coefficient = 0, we skip
+				continue;
+			}
+
+			if (this.list.get(i)== 1) {
+				if (i == this.list.size() - 2) {
+					polynomial += "x + ";
+					continue;
+				}
+				if (i == this.list.size() - 1) {
+					polynomial += this.list.get(i);
+					break;
+				}
+				polynomial += "x^" + (this.list.size() - i - 1) + " + ";
+			}
+
+			if (i == this.list.size() - 1) {
+				polynomial += this.list.get(this.list.size() - 1);
+			}
+			else {
+				polynomial += this.list.get(i) + "x^" + (this.list.size() - i - 1) + " + ";
+			}
+			// if (i == this.list.size() - 1) {
+			// 	polynomial += this.list.get(i);
+			// }
+		}
+		return polynomial;
+	}
+
+	public static void main(String args[]) {
+		Polynomial p1 = new Polynomial();
+		p1.addTerm(2);
+		p1.addTerm(0);
+		p1.addTerm(4);
+		p1.addTerm(1);
+		p1.addTerm(3);
+		System.out.println(p1);
+		Polynomial p1d = p1.derivative();
+		System.out.println(p1d);
+
+
 	}
 	
 	/**
@@ -38,12 +87,23 @@ public class Polynomial {
 	 * @return value of polynomial at that x
 	 */
 	public double evaluate(double x) {
-		return 0;//FIXME
+		double answer = 0;
+		//polynomial += this.list.get(i) + "x^" + (this.list.size() - i - 1) + " + ";
+		for (int i = 0; i < this.list.size(); i++) {
+			answer += this.list.get(i) * (Math.pow(x, this.list.size() - i - 1));
+		}
+		return answer;
 	}
 
 	
 	public Polynomial derivative() {
-		return null;//FIXME
+		Polynomial derivative = new Polynomial();
+		for (int i = 0; i < this.list.size() - 1; i++) {
+			double newConstant = 0;
+			newConstant = this.list.get(i) * (this.list.size() - i - 1);
+			derivative.addTerm(newConstant);
+		}
+		return derivative;
 	}
 	
 
